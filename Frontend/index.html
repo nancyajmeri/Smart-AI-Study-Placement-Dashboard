@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyAI — Smart Placement Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     ① LOGIN / SIGNUP PAGE
+══════════════════════════════════════════ -->
+<div id="login-page" class="page active">
+  <div class="login-bg"></div>
+  <div class="login-grid"></div>
+  <div class="login-wrap">
+
+    <!-- Hero -->
+    <div class="login-hero">
+      <div>
+        <div class="brand-row">
+          <div class="brand-icon"><i class="ti ti-brain"></i></div>
+          <span class="brand-name">StudyAI</span>
+        </div>
+        <div class="hero-h">Your AI-powered<br><span>placement</span><br>companion.</div>
+        <div class="hero-p">Smart study planning, DSA tracking, AI recommendations, and placement prep — all in one intelligent dashboard built for students.</div>
+      </div>
+      <div class="hero-stats">
+        <div class="hstat"><div class="hstat-n">2.4k+</div><div class="hstat-l">Students</div></div>
+        <div class="hstat"><div class="hstat-n">94%</div><div class="hstat-l">Placement Rate</div></div>
+        <div class="hstat"><div class="hstat-n">50+</div><div class="hstat-l">Companies</div></div>
+        <div class="hstat"><div class="hstat-n">AI</div><div class="hstat-l">Recommendations</div></div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="login-form-side">
+      <div class="ftitle">Welcome 👋</div>
+      <div class="fsub" id="form-sub">Sign in to your account to continue</div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-signin" onclick="switchTab('signin')">Sign In</button>
+        <button class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <div class="form-error" id="form-error"></div>
+
+      <!-- SIGN IN FORM -->
+      <div id="signin-form">
+        <div class="fld">
+          <label>Email Address</label>
+          <input type="email" id="si-email" placeholder="you@college.edu" autocomplete="email">
+        </div>
+        <div class="fld">
+          <label>Password</label>
+          <input type="password" id="si-pass" placeholder="Your password" autocomplete="current-password">
+        </div>
+        <button class="btn-primary" id="si-btn" onclick="handleSignIn()">
+          <i class="ti ti-login"></i> Sign In
+        </button>
+        <div style="margin-top:14px;text-align:center;font-size:13px;color:var(--text2);">
+          Don't have an account? <span style="color:var(--accent);cursor:pointer;" onclick="switchTab('signup')">Sign Up</span>
+        </div>
+      </div>
+
+      <!-- SIGN UP FORM -->
+      <div id="signup-form" style="display:none;">
+        <div class="fld">
+          <label>Full Name</label>
+          <input type="text" id="su-name" placeholder="e.g. Raj Sharma" autocomplete="name">
+        </div>
+        <div class="fld">
+          <label>Email Address</label>
+          <input type="email" id="su-email" placeholder="you@college.edu" autocomplete="email">
+        </div>
+        <div class="fld">
+          <label>College / Institution</label>
+          <input type="text" id="su-college" placeholder="e.g. SVNIT Surat / IIT Bombay">
+        </div>
+        <div class="fld">
+          <label>Password <span style="font-size:10px;color:var(--text3);text-transform:none;letter-spacing:0;">(min. 6 characters)</span></label>
+          <input type="password" id="su-pass" placeholder="Create a strong password" autocomplete="new-password">
+        </div>
+        <button class="btn-primary" id="su-btn" onclick="handleSignUp()">
+          <i class="ti ti-user-plus"></i> Create Account
+        </button>
+        <div style="margin-top:14px;text-align:center;font-size:13px;color:var(--text2);">
+          Already have an account? <span style="color:var(--accent);cursor:pointer;" onclick="switchTab('signin')">Sign In</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ② APP PAGE
+══════════════════════════════════════════ -->
+<div id="app-page" class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-header">
+      <div class="brand-icon" style="width:34px;height:34px;font-size:17px;flex-shrink:0;"><i class="ti ti-brain"></i></div>
+      <span class="sb-brand">StudyAI</span>
+    </div>
+
+    <div class="nav-section">Main</div>
+    <button class="nav-item active" onclick="goSection('dashboard',this)"><i class="ti ti-dashboard"></i><span>Dashboard</span></button>
+    <button class="nav-item" onclick="goSection('planner',this)"><i class="ti ti-calendar-week"></i><span>Study Planner</span></button>
+    <button class="nav-item" onclick="goSection('dsa',this)"><i class="ti ti-code"></i><span>DSA Practice</span><span class="nav-badge">3</span></button>
+    <button class="nav-item" onclick="goSection('analytics',this)"><i class="ti ti-chart-bar"></i><span>Analytics</span></button>
+
+    <div class="nav-section">Placement</div>
+    <button class="nav-item" onclick="goSection('placement',this)"><i class="ti ti-briefcase"></i><span>Placement Prep</span></button>
+    <button class="nav-item" onclick="goSection('interviews',this)"><i class="ti ti-calendar-event"></i><span>Interviews</span><span class="nav-badge amber">2</span></button>
+
+    <div class="nav-section">Account</div>
+    <button class="nav-item" onclick="goSection('profile',this)"><i class="ti ti-user-circle"></i><span>Profile</span></button>
+    <button class="nav-item" onclick="goSection('settings',this)"><i class="ti ti-settings"></i><span>Settings</span></button>
+
+    <div class="sb-footer">
+      <div class="user-chip">
+        <div class="avatar" id="sb-avatar">?</div>
+        <div>
+          <div class="u-name" id="sb-name">Loading…</div>
+          <div class="u-role" id="sb-role">Student</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">
+        <i class="ti ti-logout"></i><span>Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="tb-left">
+        <div class="tb-title" id="tb-title">Dashboard</div>
+        <div class="tb-crumb"><i class="ti ti-chevron-right" style="font-size:12px;"></i><span id="tb-crumb">Overview</span></div>
+      </div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="toggleNotif()"><i class="ti ti-bell"></i><span class="notif-dot"></span></button>
+        <button class="tb-btn"><i class="ti ti-search"></i></button>
+        <div class="avatar" style="width:34px;height:34px;font-size:13px;cursor:pointer;" id="tb-avatar" onclick="goSection('profile',null)">?</div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="notif-panel" id="notif-panel">
+      <div class="np-head">
+        <h3>Notifications</h3>
+        <button class="np-close" onclick="toggleNotif()"><i class="ti ti-x"></i></button>
+      </div>
+      <div class="ni"><div class="ni-dot" style="background:var(--accent);"></div><div><div class="ni-text">AI detected low progress in Trees. 2 problems recommended today.</div><div class="ni-time">5 min ago</div></div></div>
+      <div class="ni"><div class="ni-dot" style="background:var(--accent5);"></div><div><div class="ni-text">Google mock interview at 3:00 PM today. Don't miss it!</div><div class="ni-time">1 hour ago</div></div></div>
+      <div class="ni"><div class="ni-dot" style="background:var(--accent4);"></div><div><div class="ni-text">Weekly aptitude quiz unlocked — 20 questions ready.</div><div class="ni-time">Yesterday</div></div></div>
+      <div class="ni"><div class="ni-dot" style="background:var(--accent3);"></div><div><div class="ni-text">Streak milestone! 14 days in a row 🎉</div><div class="ni-time">2 days ago</div></div></div>
+    </div>
+
+    <div class="content">
+
+      <!-- ══ DASHBOARD ══ -->
+      <div id="sec-dashboard" class="section active">
+        <div class="greeting-bar">
+          <div>
+            <h1>Good morning, <span id="dash-name" style="color:var(--accent);">there</span> 👋</h1>
+            <p>You have 3 tasks pending and 2 interviews this week. Let's get to it.</p>
+          </div>
+          <div class="date-chip"><i class="ti ti-calendar" style="font-size:14px;"></i><span id="current-date"></span></div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi blue"><div class="kpi-top"><div class="kpi-icon blue"><i class="ti ti-clock"></i></div><span class="kpi-change up">↑ 12%</span></div><div class="kpi-val">6.4h</div><div class="kpi-lbl">Study Hours Today</div></div>
+          <div class="kpi green"><div class="kpi-top"><div class="kpi-icon green"><i class="ti ti-code"></i></div><span class="kpi-change up">↑ 8%</span></div><div class="kpi-val">148</div><div class="kpi-lbl">Problems Solved</div></div>
+          <div class="kpi amber"><div class="kpi-top"><div class="kpi-icon amber"><i class="ti ti-flame"></i></div><span class="kpi-change up">↑ 2</span></div><div class="kpi-val">14</div><div class="kpi-lbl">Day Streak</div></div>
+          <div class="kpi red"><div class="kpi-top"><div class="kpi-icon red"><i class="ti ti-briefcase"></i></div><span class="kpi-change dn">↓ 1</span></div><div class="kpi-val">7</div><div class="kpi-lbl">Applications Active</div></div>
+        </div>
+
+        <div class="main-grid">
+          <div class="col">
+            <div class="card">
+              <div class="card-head"><div class="card-title"><i class="ti ti-chart-line"></i>Weekly Productivity</div><button class="card-action">View all</button></div>
+              <div class="card-body" style="padding:14px 16px;">
+                <div style="position:relative;height:200px;"><canvas id="chartProd"></canvas></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="card-title"><i class="ti ti-progress"></i>Skill Progress</div></div>
+              <div class="card-body">
+                <div class="skill-item"><div class="skill-header"><span class="skill-name">Data Structures</span><span class="skill-pct">72%</span></div><div class="skill-bar"><div class="skill-fill" style="width:72%;background:var(--accent);"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span class="skill-name">Algorithms</span><span class="skill-pct">58%</span></div><div class="skill-bar"><div class="skill-fill" style="width:58%;background:var(--accent2);"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span class="skill-name">Machine Learning</span><span class="skill-pct">45%</span></div><div class="skill-bar"><div class="skill-fill" style="width:45%;background:var(--accent3);"></div></div></div>
+                <div class="skill-item"><div class="skill-header"><span class="skill-name">SQL & Databases</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" style="width:80%;background:var(--accent4);"></div></div></div>
+                <div class="skill-item" style="margin-bottom:0;"><div class="skill-header"><span class="skill-name">System Design</span><span class="skill-pct">30%</span></div><div class="skill-bar"><div class="skill-fill" style="width:30%;background:var(--accent5);"></div></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="card-head"><div class="card-title"><i class="ti ti-brain"></i>AI Recommendations</div><button class="card-action" onclick="showToast('Recommendations refreshed!','success')">Refresh</button></div>
+              <div class="card-body" style="padding:10px 18px;">
+                <div class="rec-item"><div class="rec-icon ri-blue"><i class="ti ti-binary-tree"></i></div><div><div class="rec-title">Practice Tree traversal</div><div class="rec-sub">Low progress in Trees — 2 medium problems recommended.</div><span class="rtag rtag-urg">Urgent</span></div></div>
+                <div class="rec-item"><div class="rec-icon ri-amber"><i class="ti ti-math-symbols"></i></div><div><div class="rec-title">Aptitude: Probability chapter</div><div class="rec-sub">Weak area flagged — complete 1 mock test today.</div><span class="rtag rtag-med">Medium</span></div></div>
+                <div class="rec-item"><div class="rec-icon ri-green"><i class="ti ti-cpu"></i></div><div><div class="rec-title">Revise OS concepts</div><div class="rec-sub">Google interview pattern — review scheduling algorithms.</div><span class="rtag rtag-low">Normal</span></div></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="card-title"><i class="ti ti-calendar-event"></i>This Week</div><button class="card-action">Schedule</button></div>
+              <div class="card-body" style="padding:6px 18px;">
+                <div class="int-item"><div class="int-time">Mon<br>10AM</div><div class="int-line" style="background:var(--accent);"></div><div><div class="int-co">Google — Mock Round 1</div><div class="int-meta">Online · 60 mins</div></div><span class="int-badge ib-dsa">DSA</span></div>
+                <div class="int-item"><div class="int-time">Wed<br>3PM</div><div class="int-line" style="background:var(--accent3);"></div><div><div class="int-co">Microsoft — HR Round</div><div class="int-meta">Video Call · 45 mins</div></div><span class="int-badge ib-hr">HR</span></div>
+                <div class="int-item"><div class="int-time">Fri<br>11AM</div><div class="int-line" style="background:var(--accent4);"></div><div><div class="int-co">Amazon — Tech Round</div><div class="int-meta">In-Person · 90 mins</div></div><span class="int-badge ib-tech">Tech</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ STUDY PLANNER ══ -->
+      <div id="sec-planner" class="section">
+        <div class="plan-header">
+          <h2>Study Planner</h2>
+          <button class="btn-add" onclick="addPlanTask()"><i class="ti ti-plus"></i>Add Task</button>
+        </div>
+        <div class="week-nav">
+          <button class="wk-btn" onclick="changeWeek(-1)"><i class="ti ti-chevron-left"></i></button>
+          <span class="wk-label" id="wk-label">This Week</span>
+          <button class="wk-btn" onclick="changeWeek(1)"><i class="ti ti-chevron-right"></i></button>
+        </div>
+        <div class="week-grid" id="week-grid"></div>
+        <div class="card">
+          <div class="card-head"><div class="card-title"><i class="ti ti-target"></i>Weekly Goals</div></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+              <div class="stile"><div class="stile-n" style="color:var(--accent);">35h</div><div class="stile-l">Target Hours</div></div>
+              <div class="stile"><div class="stile-n" style="color:var(--accent3);">22h</div><div class="stile-l">Completed</div></div>
+              <div class="stile"><div class="stile-n" style="color:var(--accent4);">15</div><div class="stile-l">Tasks Done</div></div>
+              <div class="stile"><div class="stile-n" style="color:var(--accent5);">8</div><div class="stile-l">Pending</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ DSA PRACTICE ══ -->
+      <div id="sec-dsa" class="section">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <h2 style="font-family:var(--fh);font-size:20px;font-weight:700;color:#fff;">DSA Practice Tracker</h2>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:20px;">
+          <div class="stile"><div class="stile-n" style="color:var(--accent3);">148</div><div class="stile-l">Solved</div></div>
+          <div class="stile"><div class="stile-n" style="color:var(--accent);">52</div><div class="stile-l">Easy</div></div>
+          <div class="stile"><div class="stile-n" style="color:var(--accent4);">71</div><div class="stile-l">Medium</div></div>
+          <div class="stile"><div class="stile-n" style="color:var(--accent5);">25</div><div class="stile-l">Hard</div></div>
+          <div class="stile"><div class="stile-n" style="color:var(--text2);">14</div><div class="stile-l">Streak</div></div>
+          <div class="stile"><div class="stile-n" style="color:var(--accent2);">3</div><div class="stile-l">Due Today</div></div>
+        </div>
+        <div class="card" style="margin-bottom:18px;">
+          <div class="card-head"><div class="card-title"><i class="ti ti-calendar-stats"></i>Activity Heatmap</div></div>
+          <div class="card-body">
+            <div class="heatmap" id="heatmap"></div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;color:var(--text3);">Less <span class="hc"></span><span class="hc l1"></span><span class="hc l2"></span><span class="hc l3"></span><span class="hc l4"></span> More</div>
+          </div>
+        </div>
+        <div class="dsa-tabs">
+          <button class="dsa-tab active" onclick="dsaFilter('all',this)">All Topics</button>
+          <button class="dsa-tab" onclick="dsaFilter('Arrays',this)">Arrays</button>
+          <button class="dsa-tab" onclick="dsaFilter('Trees',this)">Trees</button>
+          <button class="dsa-tab" onclick="dsaFilter('DP',this)">DP</button>
+          <button class="dsa-tab" onclick="dsaFilter('Graphs',this)">Graphs</button>
+        </div>
+        <div class="card">
+          <table class="prob-table">
+            <thead><tr><th>Status</th><th>Problem</th><th>Topic</th><th>Difficulty</th><th>Company</th><th>Action</th></tr></thead>
+            <tbody id="prob-list"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══ ANALYTICS ══ -->
+      <div id="sec-analytics" class="section">
+        <div style="margin-bottom:20px;">
+          <h2 style="font-family:var(--fh);font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;">Performance Analytics</h2>
+          <p style="font-size:13px;color:var(--text2);">AI-powered insights into your study patterns and growth.</p>
+        </div>
+        <div class="analytics-grid">
+          <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-bar"></i>Study Hours / Week</div></div><div class="card-body" style="padding:14px 16px;"><div style="position:relative;height:220px;"><canvas id="chartStudy"></canvas></div></div></div>
+          <div class="card"><div class="card-head"><div class="card-title"><i class="ti ti-chart-pie"></i>Topic Distribution</div></div><div class="card-body" style="padding:14px 16px;"><div style="position:relative;height:220px;"><canvas id="chartTopic"></canvas></div></div></div>
+        </div>
+        <div class="card" style="margin-bottom:18px;">
+          <div class="card-head"><div class="card-title"><i class="ti ti-trending-up"></i>Coding Progress Over Time</div></div>
+          <div class="card-body" style="padding:14px 16px;"><div style="position:relative;height:200px;"><canvas id="chartCode"></canvas></div></div>
+        </div>
+        <div class="analytics-grid">
+          <div class="card">
+            <div class="card-head"><div class="card-title"><i class="ti ti-brain"></i>AI Productivity Score</div></div>
+            <div class="card-body" style="text-align:center;padding:28px 20px;">
+              <div style="font-family:var(--fh);font-size:60px;font-weight:800;color:var(--accent);letter-spacing:-4px;line-height:1;">82</div>
+              <div style="font-size:13px;color:var(--text2);margin-bottom:18px;">out of 100 — <span style="color:var(--accent3);">Very Good</span></div>
+              <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+                <span style="font-size:11px;padding:4px 10px;border-radius:99px;background:rgba(6,214,160,.1);color:var(--accent3);">↑ Consistency</span>
+                <span style="font-size:11px;padding:4px 10px;border-radius:99px;background:rgba(99,115,255,.1);color:var(--accent);">↑ Code Quality</span>
+                <span style="font-size:11px;padding:4px 10px;border-radius:99px;background:rgba(244,63,94,.1);color:var(--accent5);">↓ System Design</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title"><i class="ti ti-report-analytics"></i>This Month</div></div>
+            <div class="card-body">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="stile"><div class="stile-n" style="color:var(--accent);">96h</div><div class="stile-l">Total study</div></div>
+                <div class="stile"><div class="stile-n" style="color:var(--accent3);">43</div><div class="stile-l">Problems solved</div></div>
+                <div class="stile"><div class="stile-n" style="color:var(--accent4);">5</div><div class="stile-l">Mock tests</div></div>
+                <div class="stile"><div class="stile-n" style="color:var(--accent2);">3</div><div class="stile-l">Interviews cleared</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PLACEMENT PREP ══ -->
+      <div id="sec-placement" class="section">
+        <div style="margin-bottom:24px;">
+          <h2 style="font-family:var(--fh);font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;">Placement Preparation</h2>
+          <p style="font-size:13px;color:var(--text2);">Track your readiness across all placement dimensions.</p>
+        </div>
+        <div class="prep-grid">
+          <div class="prep-card" style="border-top:3px solid var(--accent);"><div class="prep-icon" style="background:rgba(99,115,255,.12);color:var(--accent);"><i class="ti ti-code"></i></div><div class="prep-title">DSA Mastery</div><div class="prep-desc">Arrays, trees, graphs, DP — cover all patterns and edge cases.</div><div class="prep-bar"><div class="prep-fill" style="width:72%;background:var(--accent);"></div></div><div class="prep-pct">72% complete</div></div>
+          <div class="prep-card" style="border-top:3px solid var(--accent3);"><div class="prep-icon" style="background:rgba(6,214,160,.12);color:var(--accent3);"><i class="ti ti-math-symbols"></i></div><div class="prep-title">Aptitude Training</div><div class="prep-desc">Quantitative, verbal, and logical reasoning for aptitude tests.</div><div class="prep-bar"><div class="prep-fill" style="width:55%;background:var(--accent3);"></div></div><div class="prep-pct">55% complete</div></div>
+          <div class="prep-card" style="border-top:3px solid var(--accent4);"><div class="prep-icon" style="background:rgba(245,158,11,.12);color:var(--accent4);"><i class="ti ti-layout"></i></div><div class="prep-title">System Design</div><div class="prep-desc">Scalable system design, HLD, LLD for senior software roles.</div><div class="prep-bar"><div class="prep-fill" style="width:30%;background:var(--accent4);"></div></div><div class="prep-pct">30% complete</div></div>
+          <div class="prep-card" style="border-top:3px solid var(--accent2);"><div class="prep-icon" style="background:rgba(139,92,246,.12);color:var(--accent2);"><i class="ti ti-users"></i></div><div class="prep-title">HR & Soft Skills</div><div class="prep-desc">Behavioral questions, communication, and mock HR rounds.</div><div class="prep-bar"><div class="prep-fill" style="width:68%;background:var(--accent2);"></div></div><div class="prep-pct">68% complete</div></div>
+          <div class="prep-card" style="border-top:3px solid var(--accent5);"><div class="prep-icon" style="background:rgba(244,63,94,.12);color:var(--accent5);"><i class="ti ti-cpu"></i></div><div class="prep-title">Core CS Subjects</div><div class="prep-desc">OS, DBMS, CN, OOP — essential theory for technical rounds.</div><div class="prep-bar"><div class="prep-fill" style="width:62%;background:var(--accent5);"></div></div><div class="prep-pct">62% complete</div></div>
+          <div class="prep-card" style="border-top:3px solid var(--accent3);"><div class="prep-icon" style="background:rgba(6,214,160,.12);color:var(--accent3);"><i class="ti ti-file-cv"></i></div><div class="prep-title">Resume & Profile</div><div class="prep-desc">Resume polish, LinkedIn, GitHub profile optimization.</div><div class="prep-bar"><div class="prep-fill" style="width:88%;background:var(--accent3);"></div></div><div class="prep-pct">88% complete</div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div class="card-title"><i class="ti ti-building"></i>Company Pipeline</div><button class="btn-add" style="font-size:12px;padding:7px 14px;" onclick="showToast('Add company feature coming soon!','info')"><i class="ti ti-plus"></i>Add Company</button></div>
+          <div class="card-body" style="padding:6px 18px;">
+            <div class="company-row"><div class="co-logo">🔵</div><div><div class="co-name">Google</div><div class="co-role">SWE Intern · 2025</div></div><span class="co-status cs-upcoming">Interview Scheduled</span></div>
+            <div class="company-row"><div class="co-logo">🪟</div><div><div class="co-name">Microsoft</div><div class="co-role">SWE-1 · Full Time</div></div><span class="co-status cs-applied">Applied</span></div>
+            <div class="company-row"><div class="co-logo">📦</div><div><div class="co-name">Amazon</div><div class="co-role">SDE-1 · Full Time</div></div><span class="co-status cs-upcoming">Round 2 Cleared</span></div>
+            <div class="company-row"><div class="co-logo">🟠</div><div><div class="co-name">Infosys</div><div class="co-role">Systems Engineer</div></div><span class="co-status cs-applied">Offer Received</span></div>
+            <div class="company-row"><div class="co-logo">💙</div><div><div class="co-name">Flipkart</div><div class="co-role">SDE-1 · Intern</div></div><span class="co-status cs-prep">Preparing</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ INTERVIEWS ══ -->
+      <div id="sec-interviews" class="section">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+          <h2 style="font-family:var(--fh);font-size:20px;font-weight:700;color:#fff;">Interview Schedule</h2>
+          <button class="btn-add" onclick="showToast('Schedule interview feature coming soon!','info')"><i class="ti ti-plus"></i>Schedule Interview</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 340px;gap:18px;">
+          <div class="card">
+            <div class="card-head"><div class="card-title"><i class="ti ti-list"></i>All Interviews</div></div>
+            <div style="padding:8px 18px;">
+              <div class="int-item" style="gap:16px;padding:16px 0;">
+                <div style="background:rgba(99,115,255,.12);border-radius:10px;padding:10px 14px;text-align:center;min-width:60px;">
+                  <div style="font-size:11px;color:var(--accent);font-weight:600;">MON</div>
+                  <div style="font-family:var(--fh);font-size:22px;font-weight:700;color:#fff;line-height:1;">19</div>
+                </div>
+                <div><div class="int-co" style="font-size:15px;">Google — Mock Round 1</div><div class="int-meta">10:00 AM · Online · DSA Focus · 60 mins</div><div style="margin-top:6px;"><span class="int-badge ib-dsa">DSA</span></div></div>
+              </div>
+              <div class="int-item" style="gap:16px;padding:16px 0;">
+                <div style="background:rgba(6,214,160,.1);border-radius:10px;padding:10px 14px;text-align:center;min-width:60px;">
+                  <div style="font-size:11px;color:var(--accent3);font-weight:600;">WED</div>
+                  <div style="font-family:var(--fh);font-size:22px;font-weight:700;color:#fff;line-height:1;">21</div>
+                </div>
+                <div><div class="int-co" style="font-size:15px;">Microsoft — HR Round</div><div class="int-meta">3:00 PM · Video Call · Behavioral · 45 mins</div><div style="margin-top:6px;"><span class="int-badge ib-hr">HR</span></div></div>
+              </div>
+              <div class="int-item" style="gap:16px;padding:16px 0;">
+                <div style="background:rgba(245,158,11,.1);border-radius:10px;padding:10px 14px;text-align:center;min-width:60px;">
+                  <div style="font-size:11px;color:var(--accent4);font-weight:600;">FRI</div>
+                  <div style="font-family:var(--fh);font-size:22px;font-weight:700;color:#fff;line-height:1;">23</div>
+                </div>
+                <div><div class="int-co" style="font-size:15px;">Amazon — Technical Round 2</div><div class="int-meta">11:00 AM · In-Person · System Design · 90 mins</div><div style="margin-top:6px;"><span class="int-badge ib-tech">Technical</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="card">
+              <div class="card-head"><div class="card-title"><i class="ti ti-chart-donut"></i>Interview Stats</div></div>
+              <div class="card-body">
+                <div class="stile" style="text-align:left;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;margin-bottom:10px;"><span style="font-size:13px;color:var(--text2);">Total Scheduled</span><span class="stile-n" style="font-size:18px;color:var(--accent);">12</span></div>
+                <div class="stile" style="text-align:left;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;margin-bottom:10px;"><span style="font-size:13px;color:var(--text2);">Cleared</span><span class="stile-n" style="font-size:18px;color:var(--accent3);">7</span></div>
+                <div class="stile" style="text-align:left;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;margin-bottom:10px;"><span style="font-size:13px;color:var(--text2);">Upcoming</span><span class="stile-n" style="font-size:18px;color:var(--accent4);">3</span></div>
+                <div class="stile" style="text-align:left;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;"><span style="font-size:13px;color:var(--text2);">Success Rate</span><span class="stile-n" style="font-size:18px;color:var(--accent2);">58%</span></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head"><div class="card-title"><i class="ti ti-bulb"></i>Preparation Tips</div></div>
+              <div class="card-body" style="font-size:13px;color:var(--text2);line-height:2;">
+                <div>🎯 Review your notes 24h before</div>
+                <div>💻 Practice on whiteboard too</div>
+                <div>🗣 Think out loud during interviews</div>
+                <div>📖 Prepare 3 STAR stories for HR</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PROFILE ══ -->
+      <div id="sec-profile" class="section">
+        <div class="profile-hero">
+          <div class="avatar-lg" id="prof-avatar">?</div>
+          <div>
+            <h2 id="prof-name-display">Loading…</h2>
+            <div class="profile-meta" id="prof-meta">Final Year CSE · Student</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <span class="ptag">Python</span><span class="ptag">Flask</span><span class="ptag">ML / AI</span><span class="ptag">DSA</span><span class="ptag">MongoDB</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-grid">
+          <div class="card">
+            <div class="card-head"><div class="card-title"><i class="ti ti-user"></i>Personal Info</div></div>
+            <div class="card-body">
+              <div style="margin-bottom:14px;"><div class="ilabel">Full Name</div><input class="ifield" id="pf-name" type="text" placeholder="Your full name"></div>
+              <div style="margin-bottom:14px;"><div class="ilabel">Email</div><input class="ifield" id="pf-email" type="email" placeholder="your@email.com" readonly style="opacity:.6;cursor:not-allowed;"></div>
+              <div style="margin-bottom:14px;"><div class="ilabel">Phone</div><input class="ifield" id="pf-phone" type="text" placeholder="+91 XXXXX XXXXX"></div>
+              <div><div class="ilabel">LinkedIn URL</div><input class="ifield" id="pf-linkedin" type="text" placeholder="linkedin.com/in/yourprofile"></div>
+              <button class="btn-save" onclick="saveProfile()">Save Changes</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title"><i class="ti ti-school"></i>Academic Details</div></div>
+            <div class="card-body">
+              <div style="margin-bottom:14px;"><div class="ilabel">College / University</div><input class="ifield" id="pf-college" type="text" placeholder="e.g. SVNIT Surat"></div>
+              <div style="margin-bottom:14px;"><div class="ilabel">Degree & Branch</div><input class="ifield" id="pf-degree" type="text" placeholder="e.g. B.Tech CSE"></div>
+              <div style="margin-bottom:14px;"><div class="ilabel">Year of Graduation</div><input class="ifield" id="pf-year" type="text" placeholder="e.g. 2026"></div>
+              <div><div class="ilabel">CGPA</div><input class="ifield" id="pf-cgpa" type="text" placeholder="e.g. 8.7 / 10"></div>
+              <button class="btn-save" onclick="saveAcademic()">Save Academic Info</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SETTINGS ══ -->
+      <div id="sec-settings" class="section">
+        <div style="margin-bottom:24px;"><h2 style="font-family:var(--fh);font-size:20px;font-weight:700;color:#fff;">Settings</h2></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+          <div class="card">
+            <div class="card-head"><div class="card-title"><i class="ti ti-bell"></i>Notifications</div></div>
+            <div class="card-body">
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div><div style="font-size:13px;color:var(--text);">AI Study Recommendations</div><div style="font-size:11px;color:var(--text3);">Daily personalized suggestions</div></div>
+                  <div onclick="this.style.background=this.style.background===''||this.style.background==='var(--bg2)'?'var(--accent)':'var(--bg2)'" style="width:40px;height:22px;border-radius:99px;background:var(--accent);cursor:pointer;border:1px solid var(--border);transition:background .2s;"></div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div><div style="font-size:13px;color:var(--text);">Interview Reminders</div><div style="font-size:11px;color:var(--text3);">1 hour before scheduled</div></div>
+                  <div onclick="this.style.background=this.style.background===''||this.style.background==='var(--bg2)'?'var(--accent)':'var(--bg2)'" style="width:40px;height:22px;border-radius:99px;background:var(--accent);cursor:pointer;border:1px solid var(--border);transition:background .2s;"></div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div><div style="font-size:13px;color:var(--text);">Daily Streak Alert</div><div style="font-size:11px;color:var(--text3);">Keep your streak alive</div></div>
+                  <div onclick="this.style.background=this.style.background===''||this.style.background==='var(--bg2)'?'var(--accent)':'var(--bg2)'" style="width:40px;height:22px;border-radius:99px;background:var(--bg2);cursor:pointer;border:1px solid var(--border);transition:background .2s;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><div class="card-title"><i class="ti ti-target"></i>Study Preferences</div></div>
+            <div class="card-body">
+              <div style="margin-bottom:14px;"><div class="ilabel">Daily Study Goal (hours)</div><input class="ifield" type="number" value="6" min="1" max="16" style="margin-top:6px;"></div>
+              <div style="margin-bottom:14px;"><div class="ilabel">Preferred Study Time</div><select class="ifield" style="margin-top:6px;"><option>Morning (6 AM – 12 PM)</option><option>Afternoon (12 PM – 6 PM)</option><option selected>Evening (6 PM – 11 PM)</option><option>Night (11 PM – 3 AM)</option></select></div>
+              <div style="margin-bottom:14px;"><div class="ilabel">AI Focus Priority</div><select class="ifield" style="margin-top:6px;"><option selected>Placement Focused</option><option>Academics First</option><option>Balanced</option></select></div>
+              <button class="btn-save" onclick="showToast('Preferences saved!','success')">Save Preferences</button>
+            </div>
+          </div>
+          <div class="card" style="grid-column:1/-1;">
+            <div class="card-head"><div class="card-title"><i class="ti ti-shield-lock"></i>Account Security</div></div>
+            <div class="card-body" style="display:flex;gap:14px;flex-wrap:wrap;">
+              <button class="btn-save" onclick="showToast('Password change coming soon!','info')">Change Password</button>
+              <button style="padding:10px 24px;background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.25);border-radius:var(--radius-sm);color:var(--accent5);font-family:var(--fb);font-size:13px;font-weight:500;cursor:pointer;margin-top:16px;" onclick="handleLogout()">Sign Out of All Devices</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app-page -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
